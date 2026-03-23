@@ -7,7 +7,11 @@ import { useAuthStore } from "../store/useAuthStore";
 const HomePage = () => {
     const { tasks, isLoading, isCreating, isDeleting, fetchTasks, createTask, deleteTask } = useTaskStore();
     const { authUser, onlineUsers } = useAuthStore();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState("");
+    const [newTaskDescription, setNewTaskDescription] = useState("");
+    const [newTaskStartDate, setNewTaskStartDate] = useState("");
+    const [newTaskDeadline, setNewTaskDeadline] = useState("");
     const [filter, setFilter] = useState("all");
     
     useEffect(() => {
@@ -17,8 +21,19 @@ const HomePage = () => {
     const handleCreateTask = (e) => {
         e.preventDefault();
         if (!newTaskTitle.trim()) return;
-        createTask({ title: newTaskTitle, status: "pending", priority: "medium" });
+        createTask({ 
+            title: newTaskTitle, 
+            description: newTaskDescription,
+            startDate: newTaskStartDate,
+            deadline: newTaskDeadline,
+            status: "pending", 
+            priority: "medium" 
+        });
         setNewTaskTitle("");
+        setNewTaskDescription("");
+        setNewTaskStartDate("");
+        setNewTaskDeadline("");
+        setIsModalOpen(false);
     };
 
     const filteredTasks = tasks.filter(task => {
@@ -48,19 +63,12 @@ const HomePage = () => {
                         <p className="text-base-content/70 mt-2 font-medium">จัดการเวิร์กโฟลวและเพิ่มประสิทธิภาพการทำงานของคุณวันนี้</p>
                     </div>
 
-                    <form onSubmit={handleCreateTask} className="flex gap-3 w-full md:w-auto items-center">
-                        <input
-                            type="text"
-                            placeholder="ฉันต้องทำ..."
-                            className="input w-full md:w-80 h-14 rounded-full pl-6 pr-4 bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
-                            value={newTaskTitle}
-                            onChange={(e) => setNewTaskTitle(e.target.value)}
-                        />
-                        <button type="submit" className="btn h-14 px-8 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 text-base font-bold tracking-wide shadow-lg hover:shadow-primary/30 transition-shadow" disabled={isCreating}>
-                            {isCreating ? <Loader className="animate-spin size-5" /> : <Plus className="size-5" />}
-                            <span className="hidden sm:inline ml-2">เพิ่ม</span>
+                    <div className="flex w-full md:w-auto mt-4 md:mt-0">
+                        <button onClick={() => setIsModalOpen(true)} className="btn h-14 px-8 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 text-base font-bold tracking-wide shadow-lg hover:shadow-primary/30 transition-shadow">
+                            <Plus className="size-5" />
+                            <span className="hidden sm:inline ml-2">เพิ่มงานใหม่</span>
                         </button>
-                    </form>
+                    </div>
                 </div>
 
                 {/* Stats Grid */}
@@ -135,6 +143,22 @@ const HomePage = () => {
                                                 <h3 className={`font-bold text-xl tracking-wide transition-colors ${task.status === "completed" ? "line-through text-base-content/40" : "text-base-content/90"}`}>
                                                     {task.title}
                                                 </h3>
+                                                {task.description && (
+                                                    <p className="text-sm mt-1 text-base-content/70">{task.description}</p>
+                                                )}
+                                                <div className="flex flex-wrap items-center gap-2 mt-2">
+                                                    {task.startDate && (
+                                                        <span className="text-xs bg-base-200 px-2 py-1 rounded-md text-base-content/70 flex items-center gap-1">
+                                                            <Clock size={12} /> เริ่ม: {new Date(task.startDate).toLocaleString('th-TH')}
+                                                        </span>
+                                                    )}
+                                                    {task.deadline && (
+                                                        <span className={`text-xs px-2 py-1 rounded-md flex items-center gap-1 ${task.status !== 'completed' && new Date() > new Date(task.deadline) ? 'bg-error/20 text-error font-bold border border-error/50' : 'bg-base-200 text-base-content/70'}`}>
+                                                            <Clock size={12} /> สิ้นสุด: {new Date(task.deadline).toLocaleString('th-TH')}
+                                                            {task.status !== 'completed' && new Date() > new Date(task.deadline) && " (เลยกำหนด)"}
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 <p className="text-xs text-base-content/50 mt-1 font-medium flex items-center">
                                                     โดย: {task.userId?.fullName || "คุณ"}
                                                     {task.userId && (
@@ -181,6 +205,39 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Create Task Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-base-100 rounded-[2rem] p-8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-200 border border-base-content/10">
+                        <h2 className="text-3xl font-extrabold mb-6 text-base-content">เพิ่มงานใหม่</h2>
+                        <form onSubmit={handleCreateTask} className="space-y-4">
+                            <div>
+                                <label className="label text-sm font-bold text-base-content/80">หัวข้องาน</label>
+                                <input type="text" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary" placeholder="ระบุหัวข้องาน" value={newTaskTitle} onChange={(e) => setNewTaskTitle(e.target.value)} required />
+                            </div>
+                            <div>
+                                <label className="label text-sm font-bold text-base-content/80">รายละเอียด</label>
+                                <textarea className="textarea textarea-bordered w-full rounded-xl h-24 focus:outline-none focus:border-primary" placeholder="ระบุรายละเอียดเพิ่มเติม" value={newTaskDescription} onChange={(e) => setNewTaskDescription(e.target.value)}></textarea>
+                            </div>
+                            <div>
+                                <label className="label text-sm font-bold text-base-content/80">เวลาที่สร้าง (เริ่ม)</label>
+                                <input type="datetime-local" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary" value={newTaskStartDate} onChange={(e) => setNewTaskStartDate(e.target.value)} required />
+                            </div>
+                            <div>
+                                <label className="label text-sm font-bold text-base-content/80">สิ้นสุดกำหนดเมื่อไหร่</label>
+                                <input type="datetime-local" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary" value={newTaskDeadline} onChange={(e) => setNewTaskDeadline(e.target.value)} required />
+                            </div>
+                            <div className="flex justify-end gap-3 mt-8">
+                                <button type="button" className="btn btn-ghost rounded-xl font-bold" onClick={() => setIsModalOpen(false)}>ยกเลิก</button>
+                                <button type="submit" className="btn btn-primary rounded-xl px-8 font-bold" disabled={isCreating}>
+                                    {isCreating ? <Loader className="animate-spin size-5" /> : "บันทึก"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

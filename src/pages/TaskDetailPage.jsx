@@ -11,6 +11,9 @@ const TaskDetailPage = () => {
     const { authUser } = useAuthStore();
     
     const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [deadline, setDeadline] = useState("");
     const [status, setStatus] = useState("pending");
     const [priority, setPriority] = useState("medium");
     
@@ -24,6 +27,9 @@ const TaskDetailPage = () => {
         const task = tasks.find(t => t._id === id);
         if (task) {
             setTitle(task.title);
+            setDescription(task.description || "");
+            setStartDate(task.startDate ? new Date(task.startDate).toISOString().slice(0, 16) : "");
+            setDeadline(task.deadline ? new Date(task.deadline).toISOString().slice(0, 16) : "");
             setStatus(task.status);
             setPriority(task.priority);
         }
@@ -33,7 +39,7 @@ const TaskDetailPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await updateTask(id, { title, status, priority });
+        await updateTask(id, { title, description, startDate, deadline, status, priority });
         navigate("/");
     };
 
@@ -108,6 +114,47 @@ const TaskDetailPage = () => {
                                 placeholder="เช่น ทำรายงานประจำเดือนให้เสร็จ..."
                                 required
                             />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label mb-2 px-1">
+                                <span className="label-text font-bold text-lg text-base-content/90">รายละเอียด</span>
+                            </label>
+                            <textarea
+                                className="textarea text-lg p-6 rounded-[2rem] bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:bg-base-100/60 focus:outline-none focus:border-primary transition-all font-bold shadow-sm"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="รายละเอียดเพิ่มเติม..."
+                                rows={4}
+                            ></textarea>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="form-control">
+                                <label className="label mb-2 px-1">
+                                    <span className="label-text font-bold text-lg text-base-content/90">เวลาที่สร้าง (เริ่ม)</span>
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    className="input h-16 text-lg pl-6 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:bg-base-100/60 focus:outline-none focus:border-primary transition-all font-bold shadow-sm"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-control">
+                                <label className="label mb-2 px-1">
+                                    <span className="label-text font-bold text-lg text-base-content/90">สิ้นสุดกำหนดเมื่อไหร่</span>
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    className="input h-16 text-lg pl-6 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:bg-base-100/60 focus:outline-none focus:border-primary transition-all font-bold shadow-sm"
+                                    value={deadline}
+                                    onChange={(e) => setDeadline(e.target.value)}
+                                    required
+                                />
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
