@@ -208,8 +208,8 @@ const HomePage = () => {
 
             {/* Create Task Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-base-100 rounded-[2rem] p-8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-200 border border-base-content/10">
+                <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
+                    <div className="bg-base-100 rounded-[2rem] p-6 sm:p-8 w-full max-w-lg shadow-2xl animate-in fade-in zoom-in duration-200 border border-base-content/10 my-8">
                         <h2 className="text-3xl font-extrabold mb-6 text-base-content">เพิ่มงานใหม่</h2>
                         <form onSubmit={handleCreateTask} className="space-y-4">
                             <div>
@@ -220,13 +220,15 @@ const HomePage = () => {
                                 <label className="label text-sm font-bold text-base-content/80">รายละเอียด</label>
                                 <textarea className="textarea textarea-bordered w-full rounded-xl h-24 focus:outline-none focus:border-primary" placeholder="ระบุรายละเอียดเพิ่มเติม" value={newTaskDescription} onChange={(e) => setNewTaskDescription(e.target.value)}></textarea>
                             </div>
-                            <div>
-                                <label className="label text-sm font-bold text-base-content/80">เวลาที่สร้าง (เริ่ม)</label>
-                                <input type="datetime-local" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary" value={newTaskStartDate} onChange={(e) => setNewTaskStartDate(e.target.value)} required />
-                            </div>
-                            <div>
-                                <label className="label text-sm font-bold text-base-content/80">สิ้นสุดกำหนดเมื่อไหร่</label>
-                                <input type="datetime-local" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary" value={newTaskDeadline} onChange={(e) => setNewTaskDeadline(e.target.value)} required />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="label text-sm font-bold text-base-content/80">เวลาเริ่ม</label>
+                                    <input type="datetime-local" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary text-sm" value={newTaskStartDate} onChange={(e) => setNewTaskStartDate(e.target.value)} required />
+                                </div>
+                                <div>
+                                    <label className="label text-sm font-bold text-base-content/80">สิ้นสุดเมื่อไหร่</label>
+                                    <input type="datetime-local" className="input input-bordered w-full rounded-xl focus:outline-none focus:border-primary text-sm" value={newTaskDeadline} onChange={(e) => setNewTaskDeadline(e.target.value)} required />
+                                </div>
                             </div>
                             <div className="flex justify-end gap-3 mt-8">
                                 <button type="button" className="btn btn-ghost rounded-xl font-bold" onClick={() => setIsModalOpen(false)}>ยกเลิก</button>
