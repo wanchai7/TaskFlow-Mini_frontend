@@ -4,7 +4,7 @@ import { axiosInstance } from "../lib/axios";
 
 export const useThemeStore = create(
     devtools((set) => ({
-        theme: localStorage.getItem("chat-theme") || "dark",
+        theme: localStorage.getItem("chat-theme") || "night",
         setTheme: async (theme) => {
             localStorage.setItem("chat-theme", theme);
             set({ theme });

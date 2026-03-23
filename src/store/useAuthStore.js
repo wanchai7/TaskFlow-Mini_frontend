@@ -63,7 +63,7 @@ export const useAuthStore = create(
                 await axiosInstance.post("/auth/logout");
                 set({ authUser: null });
                 // Reset to system default theme on logout
-                useThemeStore.getState().setThemeSilent("dark");
+                useThemeStore.getState().setThemeSilent("night");
                 localStorage.removeItem("chat-theme");
                 toast.success("Logged out successfully");
             } catch (error) {
