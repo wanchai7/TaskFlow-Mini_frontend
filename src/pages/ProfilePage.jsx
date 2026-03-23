@@ -85,9 +85,10 @@ const ProfilePage = () => {
                                 </div>
                                 <button 
                                     onClick={() => isEditingName ? handleSaveName() : setIsEditingName(true)}
-                                    className="text-xs text-primary hover:underline font-medium"
+                                    className={`text-xs font-medium ${isUpdatingProfile ? 'text-zinc-500 cursor-not-allowed' : 'text-primary hover:underline'}`}
+                                    disabled={isUpdatingProfile}
                                 >
-                                    {isEditingName ? "บันทึก" : "แก้ไข"}
+                                    {isUpdatingProfile ? "กำลังบันทึก..." : (isEditingName ? "บันทึก" : "แก้ไข")}
                                 </button>
                             </div>
                             {isEditingName ? (
@@ -99,6 +100,7 @@ const ProfilePage = () => {
                                     autoFocus
                                     onBlur={handleSaveName}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
+                                    disabled={isUpdatingProfile}
                                 />
                             ) : (
                                 <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.fullName}</p>

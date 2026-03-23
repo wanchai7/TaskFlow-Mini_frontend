@@ -14,7 +14,7 @@ const Navbar = () => {
                             <div className="size-9 rounded-full bg-primary/20 flex items-center justify-center shadow-inner">
                                 <CheckSquare className="w-5 h-5 text-primary" />
                             </div>
-                            <h1 className="text-xl font-bold tracking-wide">TaskFlow</h1>
+                            <h1 className="text-xl font-bold tracking-wide">TaskFlow Website Wanchai</h1>
                         </Link>
                     </div>
 

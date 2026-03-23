@@ -90,7 +90,7 @@ const TaskDetailPage = () => {
                     <ArrowLeft size={18} /> กลับสู่หน้าหลัก
                 </button>
                 
-                <div className="bg-base-100/40 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-base-content/10 relative overflow-hidden">
+                <div className="bg-base-100/40 backdrop-blur-xl p-5 sm:p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-base-content/10 relative overflow-hidden">
                     <div className="flex items-center gap-5 mb-10">
                         <div className="size-14 rounded-2xl bg-primary/20 flex flex-shrink-0 items-center justify-center shadow-inner border border-primary/10">
                             <Briefcase className="size-7 text-primary" />
@@ -205,18 +205,18 @@ const TaskDetailPage = () => {
                             </div>
                         </div>
 
-                        <div className="pt-8 mt-4 border-t border-base-content/10 flex justify-end items-center gap-4">
+                        <div className="pt-8 mt-4 border-t border-base-content/10 flex flex-col-reverse sm:flex-row justify-end items-center gap-3 sm:gap-4">
                             <button 
                                 type="button" 
                                 onClick={() => navigate("/")} 
-                                className="px-6 py-3 text-base-content/60 hover:text-base-content font-bold transition-colors" 
+                                className="w-full sm:w-auto px-6 py-4 sm:py-3 text-base-content/60 hover:text-base-content hover:bg-base-content/5 rounded-full font-bold transition-all text-center" 
                                 disabled={isUpdating}
                             >
                                 ยกเลิก
                             </button>
                             <button 
                                 type="submit" 
-                                className="btn h-14 px-10 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 text-lg font-extrabold tracking-wide shadow-xl hover:-translate-y-1 transition-transform" 
+                                className="btn w-full sm:w-auto h-14 px-10 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 text-lg font-extrabold tracking-wide shadow-xl hover:-translate-y-1 transition-transform" 
                                 disabled={isUpdating}
                             >
                                 {isUpdating ? (
