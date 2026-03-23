@@ -24,19 +24,19 @@ const Navbar = () => {
                             className="btn btn-sm sm:btn-md gap-2 rounded-full bg-base-100/50 hover:bg-base-200 border-0 text-base-content shadow-sm font-medium transition-all"
                         >
                             <Settings className="w-4 h-4" />
-                            <span className="hidden sm:inline">Settings</span>
+                            <span className="hidden sm:inline">ตั้งค่า</span>
                         </Link>
 
                         {authUser && (
                             <>
                                 <Link to={"/profile"} className="btn btn-sm sm:btn-md gap-2 rounded-full bg-base-100/50 hover:bg-base-200 border-0 text-base-content shadow-sm font-medium transition-all">
                                     <User className="w-4 h-4" />
-                                    <span className="hidden sm:inline">Profile</span>
+                                    <span className="hidden sm:inline">โปรไฟล์</span>
                                 </Link>
 
                                 <button onClick={logout} className="btn btn-sm sm:btn-md gap-2 rounded-full bg-base-100/50 hover:bg-base-200 hover:text-error border-0 text-base-content shadow-sm font-medium transition-colors">
                                     <LogOut className="w-4 h-4" />
-                                    <span className="hidden sm:inline">Logout</span>
+                                    <span className="hidden sm:inline">ออกจากระบบ</span>
                                 </button>
                             </>
                         )}

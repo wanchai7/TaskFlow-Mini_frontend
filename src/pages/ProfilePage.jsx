@@ -5,6 +5,17 @@ import { Camera, Mail, User } from "lucide-react";
 const ProfilePage = () => {
     const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
     const [selectedImg, setSelectedImg] = useState(null);
+    const [fullName, setFullName] = useState(authUser?.fullName || "");
+    const [isEditingName, setIsEditingName] = useState(false);
+
+    const handleSaveName = async () => {
+        if (!fullName.trim() || fullName === authUser?.fullName) {
+            setIsEditingName(false);
+            return;
+        }
+        await updateProfile({ fullName });
+        setIsEditingName(false);
+    };
 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
@@ -26,8 +37,8 @@ const ProfilePage = () => {
             <div className="max-w-2xl mx-auto p-4 py-8">
                 <div className="bg-base-300 rounded-xl p-6 space-y-8">
                     <div className="text-center">
-                        <h1 className="text-2xl font-semibold ">Profile</h1>
-                        <p className="mt-2 text-sm text-base-content/60">Your profile information</p>
+                        <h1 className="text-2xl font-semibold ">โปรไฟล์</h1>
+                        <p className="mt-2 text-sm text-base-content/60">ข้อมูลโปรไฟล์ของคุณ</p>
                     </div>
 
                     {/* avatar upload section */}
@@ -61,38 +72,58 @@ const ProfilePage = () => {
                             </label>
                         </div>
                         <p className="text-sm text-zinc-400">
-                            {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo"}
+                            {isUpdatingProfile ? "กำลังอัปโหลด..." : "คลิกที่ไอคอนกล้องเพื่ออัปเดตรูปภาพของคุณ"}
                         </p>
                     </div>
 
                     <div className="space-y-6">
                         <div className="space-y-1.5">
-                            <div className="text-sm text-zinc-400 flex items-center gap-2">
-                                <User className="w-4 h-4" />
-                                Full Name
+                            <div className="text-sm text-zinc-400 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <User className="w-4 h-4" />
+                                    ชื่อ-นามสกุล
+                                </div>
+                                <button 
+                                    onClick={() => isEditingName ? handleSaveName() : setIsEditingName(true)}
+                                    className="text-xs text-primary hover:underline font-medium"
+                                >
+                                    {isEditingName ? "บันทึก" : "แก้ไข"}
+                                </button>
                             </div>
-                            <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.fullName}</p>
+                            {isEditingName ? (
+                                <input 
+                                    type="text" 
+                                    className="input input-bordered w-full bg-base-200" 
+                                    value={fullName}
+                                    onChange={(e) => setFullName(e.target.value)}
+                                    autoFocus
+                                    onBlur={handleSaveName}
+                                    onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
+                                />
+                            ) : (
+                                <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.fullName}</p>
+                            )}
                         </div>
 
                         <div className="space-y-1.5">
                             <div className="text-sm text-zinc-400 flex items-center gap-2">
                                 <Mail className="w-4 h-4" />
-                                Email Address
+                                อีเมล
                             </div>
                             <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.email}</p>
                         </div>
                     </div>
 
                     <div className="mt-6 bg-base-300 rounded-xl p-6">
-                        <h2 className="text-lg font-medium  mb-4">Account Information</h2>
+                        <h2 className="text-lg font-medium  mb-4">ข้อมูลบัญชี</h2>
                         <div className="space-y-3 text-sm">
                             <div className="flex items-center justify-between py-2 border-b border-zinc-700">
-                                <span>Member Since</span>
+                                <span>เป็นสมาชิกตั้งแต่</span>
                                 <span>{authUser.createdAt?.split("T")[0]}</span>
                             </div>
                             <div className="flex items-center justify-between py-2">
-                                <span>Account Status</span>
-                                <span className="text-green-500">Active</span>
+                                <span>สถานะบัญชี</span>
+                                <span className="text-green-500">ใช้งานอยู่</span>
                             </div>
                         </div>
                     </div>

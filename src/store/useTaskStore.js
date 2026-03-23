@@ -30,10 +30,10 @@ export const useTaskStore = create(
             try {
                 const res = await axiosInstance.post("/tasks", taskData);
                 set((state) => ({ tasks: [res.data, ...state.tasks] }));
-                toast.success("Task created");
+                toast.success("สร้างงานสำเร็จ");
             } catch (error) {
                 console.error("Error creating task:", error);
-                toast.error(error.response?.data?.message || "Failed to create task");
+                toast.error(error.response?.data?.message || "สร้างงานล้มเหลว");
                 set({ error: error.response?.data?.message });
             } finally {
                 set({ isCreating: false });
@@ -47,10 +47,10 @@ export const useTaskStore = create(
                 set((state) => ({
                     tasks: state.tasks.map((task) => (task._id === id ? res.data : task)),
                 }));
-                toast.success("Task updated");
+                toast.success("อัปเดตงานสำเร็จ");
             } catch (error) {
                 console.error("Error updating task:", error);
-                toast.error(error.response?.data?.message || "Failed to update task");
+                toast.error(error.response?.data?.message || "อัปเดตงานล้มเหลว");
                 set({ error: error.response?.data?.message });
             } finally {
                 set({ isUpdating: false });
@@ -64,10 +64,10 @@ export const useTaskStore = create(
                 set((state) => ({
                     tasks: state.tasks.filter((task) => task._id !== id),
                 }));
-                toast.success("Task deleted");
+                toast.success("ลบงานสำเร็จ");
             } catch (error) {
                 console.error("Error deleting task:", error);
-                toast.error(error.response?.data?.message || "Failed to delete task");
+                toast.error(error.response?.data?.message || "ลบงานล้มเหลว");
                 set({ error: error.response?.data?.message });
             } finally {
                 set({ isDeleting: false });

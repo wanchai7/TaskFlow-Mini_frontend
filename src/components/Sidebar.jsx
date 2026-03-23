@@ -32,7 +32,7 @@ const Sidebar = () => {
             <div className="border-b border-base-300 w-full p-5">
                 <div className="flex items-center gap-2">
                     <Users className="size-6" />
-                    <span className="font-medium">Contacts</span>
+                    <span className="font-medium">รายชื่อผู้ติดต่อ</span>
                 </div>
                 {/* TODO: Online filter toggle */}
                 <div className="mt-3 flex items-center gap-2">
@@ -43,9 +43,9 @@ const Sidebar = () => {
                             onChange={(e) => setShowOnlineOnly(e.target.checked)}
                             className="checkbox checkbox-sm"
                         />
-                        <span className="text-sm">Show online only</span>
+                        <span className="text-sm">แสดงเฉพาะที่ออนไลน์</span>
                     </label>
-                    <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
+                    <span className="text-xs text-zinc-500">(ออนไลน์ {onlineUsers.length - 1} คน)</span>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@ const Sidebar = () => {
                             </div>
                             <div className="flex justify-between items-center">
                                 <div className="text-sm text-zinc-400 truncate pr-2">
-                                    {user.latestMessage?.text || (user.latestMessage?.image ? "Sent an image" : (onlineUsers.includes(user._id) ? "Online" : "Offline"))}
+                                    {user.latestMessage?.text || (user.latestMessage?.image ? "ส่งรูปภาพ" : (onlineUsers.includes(user._id) ? "ออนไลน์" : "ออฟไลน์"))}
                                 </div>
                                 {user.unreadCount > 0 && (
                                     <div className="badge badge-primary badge-sm shrink-0 scale-90">
@@ -99,7 +99,7 @@ const Sidebar = () => {
                 ))}
 
                 {filteredUsers.length === 0 && (
-                    <div className="text-center text-zinc-500 py-4">No online users</div>
+                    <div className="text-center text-zinc-500 py-4">ไม่มีผู้ใช้ออนไลน์</div>
                 )}
             </div>
         </aside>
