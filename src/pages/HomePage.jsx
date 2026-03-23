@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useTaskStore } from "../store/useTaskStore";
 import { Loader, Plus, Trash2, Edit2, CheckCircle2, Circle, Clock, LayoutList } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
     const { tasks, isLoading, isCreating, isDeleting, fetchTasks, createTask, deleteTask } = useTaskStore();
+    const { authUser, onlineUsers } = useAuthStore();
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [filter, setFilter] = useState("all");
     
@@ -42,21 +44,21 @@ const HomePage = () => {
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div>
-                        <h1 className="text-4xl font-extrabold text-base-content tracking-wide">My Tasks</h1>
-                        <p className="text-base-content/70 mt-2 font-medium">Manage your workflow and productivity today.</p>
+                        <h1 className="text-4xl font-extrabold text-base-content tracking-wide">งานของฉัน</h1>
+                        <p className="text-base-content/70 mt-2 font-medium">จัดการเวิร์กโฟลวและเพิ่มประสิทธิภาพการทำงานของคุณวันนี้</p>
                     </div>
 
                     <form onSubmit={handleCreateTask} className="flex gap-3 w-full md:w-auto items-center">
                         <input
                             type="text"
-                            placeholder="I need to..."
+                            placeholder="ฉันต้องทำ..."
                             className="input w-full md:w-80 h-14 rounded-full pl-6 pr-4 bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
                             value={newTaskTitle}
                             onChange={(e) => setNewTaskTitle(e.target.value)}
                         />
                         <button type="submit" className="btn h-14 px-8 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 text-base font-bold tracking-wide shadow-lg hover:shadow-primary/30 transition-shadow" disabled={isCreating}>
                             {isCreating ? <Loader className="animate-spin size-5" /> : <Plus className="size-5" />}
-                            <span className="hidden sm:inline ml-2">Add</span>
+                            <span className="hidden sm:inline ml-2">เพิ่ม</span>
                         </button>
                     </form>
                 </div>
@@ -64,10 +66,10 @@ const HomePage = () => {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {[
-                        { title: "Total Tasks", val: stats.total, icon: <LayoutList size={26} /> },
-                        { title: "Completed", val: stats.completed, icon: <CheckCircle2 size={26} /> },
-                        { title: "In Progress", val: stats.inProgress, icon: <Clock size={26} /> },
-                        { title: "Pending", val: stats.pending, icon: <Circle size={26} /> },
+                        { title: "งานทั้งหมด", val: stats.total, icon: <LayoutList size={26} /> },
+                        { title: "เสร็จสิ้น", val: stats.completed, icon: <CheckCircle2 size={26} /> },
+                        { title: "กำลังดำเนินการ", val: stats.inProgress, icon: <Clock size={26} /> },
+                        { title: "รอดำเนินการ", val: stats.pending, icon: <Circle size={26} /> },
                     ].map((st, i) => (
                         <div key={i} className="bg-base-100/40 backdrop-blur-md border border-base-content/10 rounded-[2rem] p-6 flex flex-col items-start gap-4 shadow-xl">
                             <div className="p-4 bg-primary/10 rounded-full text-primary shadow-inner border border-primary/10">
@@ -84,7 +86,7 @@ const HomePage = () => {
                 {/* Filter and List Section */}
                 <div className="bg-base-100/40 backdrop-blur-xl border border-base-content/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
                     <div className="border-b border-base-content/10 p-5 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-base-200/50">
-                        <h2 className="text-2xl font-bold text-base-content tracking-wide">Activity Board</h2>
+                        <h2 className="text-2xl font-bold text-base-content tracking-wide">กระดานกิจกรรม</h2>
                         <div className="flex bg-base-300/50 p-1.5 rounded-full border border-base-content/5 overflow-x-auto w-full md:w-auto">
                             {['all', 'pending', 'in-progress', 'completed'].map(f => (
                                 <button 
@@ -93,7 +95,7 @@ const HomePage = () => {
                                     className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all mr-1 last:mr-0 capitalize whitespace-nowrap 
                                         ${filter === f ? 'bg-primary text-primary-content shadow-md' : 'text-base-content/70 hover:bg-base-content/10 hover:text-base-content'}`}
                                 >
-                                    {f.replace('-', ' ')}
+                                    {f === 'all' ? 'ทั้งหมด' : f === 'pending' ? 'รอดำเนินการ' : f === 'in-progress' ? 'กำลังดำเนินการ' : 'เสร็จสิ้น'}
                                 </button>
                             ))}
                         </div>
@@ -103,7 +105,7 @@ const HomePage = () => {
                         {isLoading ? (
                             <div className="flex flex-col items-center justify-center h-64 space-y-4">
                                 <Loader className="size-12 animate-spin text-primary" />
-                                <p className="text-base-content/60 font-medium tracking-wide">Fetching awesome tasks...</p>
+                                <p className="text-base-content/60 font-medium tracking-wide">กำลังโหลดงานของคุณ...</p>
                             </div>
                         ) : filteredTasks.length === 0 ? (
                             <div className="flex flex-col items-center justify-center h-64 space-y-4 text-center">
@@ -111,8 +113,8 @@ const HomePage = () => {
                                     <LayoutList className="size-12 text-base-content/30" />
                                 </div>
                                 <div>
-                                    <p className="text-xl font-bold text-base-content mb-1">No tasks to display</p>
-                                    <p className="text-base text-base-content/50 font-medium">Time to clear your mind or add something new!</p>
+                                    <p className="text-xl font-bold text-base-content mb-1">ไม่มีงานให้แสดง</p>
+                                    <p className="text-base text-base-content/50 font-medium">ถึงเวลาพักผ่อนหรือเพิ่มงานใหม่!</p>
                                 </div>
                             </div>
                         ) : (
@@ -133,20 +135,32 @@ const HomePage = () => {
                                                 <h3 className={`font-bold text-xl tracking-wide transition-colors ${task.status === "completed" ? "line-through text-base-content/40" : "text-base-content/90"}`}>
                                                     {task.title}
                                                 </h3>
+                                                <p className="text-xs text-base-content/50 mt-1 font-medium flex items-center">
+                                                    โดย: {task.userId?.fullName || "คุณ"}
+                                                    {task.userId && (
+                                                        <span className={`inline-block w-2 h-2 rounded-full ml-2 mr-1 ${onlineUsers?.includes(task.userId._id || task.userId) ? 'bg-success' : 'bg-base-content/30'}`}></span>
+                                                    )}
+                                                    {task.userId && (
+                                                        <span className="text-[10px] opacity-70">
+                                                            {onlineUsers?.includes(task.userId._id || task.userId) ? 'ออนไลน์' : 'ออฟไลน์'}
+                                                        </span>
+                                                    )}
+                                                </p>
                                                 <div className="flex flex-wrap gap-2 mt-3">
                                                     <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full border ${
                                                         task.priority === "high" ? "bg-error/20 text-error border-error/30" : 
                                                         task.priority === "medium" ? "bg-warning/20 text-warning-content border-warning-content/30" : "bg-success/20 text-success border-success/30"
                                                     }`}>
-                                                        Priority: {task.priority}
+                                                        ความสำคัญ: {task.priority === "high" ? "สูง" : task.priority === "medium" ? "ปานกลาง" : "ต่ำ"}
                                                     </span>
                                                     <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-base-content/5 text-base-content/70 border border-base-content/10">
-                                                        Status: {task.status.replace('-', ' ')}
+                                                        สถานะ: {task.status === "completed" ? "เสร็จสิ้น" : task.status === "in-progress" ? "กำลังดำเนินการ" : "รอดำเนินการ"}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                         
+                                        {(task.userId?._id === authUser._id || task.userId === authUser._id) && (
                                         <div className="flex gap-2 sm:pl-4 mt-4 sm:mt-0 justify-end border-t border-base-content/10 sm:border-0 pt-4 sm:pt-0">
                                             <Link to={`/tasks/${task._id}`} className="flex items-center justify-center size-10 rounded-full bg-info/10 hover:bg-info/20 text-info transition-all border border-info/20 hover:border-info/40">
                                                 <Edit2 size={18} />
@@ -159,6 +173,7 @@ const HomePage = () => {
                                                 {isDeleting ? <Loader className="size-4 animate-spin" /> : <Trash2 size={18} />}
                                             </button>
                                         </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>

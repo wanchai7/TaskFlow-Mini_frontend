@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Key, Mail, User, CheckSquare } from "lucide-react";
+import { Eye, EyeOff, Loader2, Key, Mail, User, CheckSquare, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 
 const SignUpPage = () => {
@@ -9,17 +9,19 @@ const SignUpPage = () => {
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
+        phone: "",
         password: "",
     });
 
     const { register, isRegistering } = useAuthStore();
 
     const validateForm = () => {
-        if (!formData.fullName.trim()) return toast.error("Full name is required");
-        if (!formData.email.trim()) return toast.error("Email is required");
-        if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
-        if (!formData.password) return toast.error("Password is required");
-        if (formData.password.length < 4) return toast.error("Password must be at least 4 characters");
+        if (!formData.fullName.trim()) return toast.error("กรุณากรอกชื่อ-นามสกุล");
+        if (!formData.email.trim()) return toast.error("กรุณากรอกอีเมล");
+        if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("รูปแบบอีเมลไม่ถูกต้อง");
+        if (!formData.phone.trim()) return toast.error("กรุณากรอกเบอร์มือถือ");
+        if (!formData.password) return toast.error("กรุณากรอกรหัสผ่าน");
+        if (formData.password.length < 4) return toast.error("รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร");
         return true;
     };
 
@@ -42,7 +44,7 @@ const SignUpPage = () => {
                             <CheckSquare className="size-8 text-primary" />
                         </div>
                     </div>
-                    <h1 className="text-3xl font-bold text-base-content tracking-wide">Create Account</h1>
+                    <h1 className="text-3xl font-bold text-base-content tracking-wide">สร้างบัญชีใหม่</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -54,7 +56,7 @@ const SignUpPage = () => {
                             <input
                                 type="text"
                                 className="input w-full pl-14 pr-6 h-14 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
-                                placeholder="Full Name"
+                                placeholder="ชื่อ-นามสกุล"
                                 value={formData.fullName}
                                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                             />
@@ -69,9 +71,24 @@ const SignUpPage = () => {
                             <input
                                 type="email"
                                 className="input w-full pl-14 pr-6 h-14 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
-                                placeholder="Email address"
+                                placeholder="อีเมล"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-control">
+                        <div className="relative flex items-center">
+                            <div className="absolute left-5 flex items-center pointer-events-none">
+                                <Phone className="size-5 text-base-content/50" />
+                            </div>
+                            <input
+                                type="text"
+                                className="input w-full pl-14 pr-6 h-14 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
+                                placeholder="เบอร์มือถือ"
+                                value={formData.phone}
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             />
                         </div>
                     </div>
@@ -84,7 +101,7 @@ const SignUpPage = () => {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 className="input w-full pl-14 h-14 pr-12 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
-                                placeholder="Password"
+                                placeholder="รหัสผ่าน"
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             />
@@ -110,19 +127,19 @@ const SignUpPage = () => {
                         {isRegistering ? (
                             <div className="flex items-center gap-2">
                                 <Loader2 className="h-5 w-5 animate-spin" />
-                                <span>Loading...</span>
+                                <span>กำลังโหลด...</span>
                             </div>
                         ) : (
-                            "Sign up"
+                            "สมัครสมาชิก"
                         )}
                     </button>
                 </form>
 
                 <div className="text-center mt-8">
                     <p className="text-base-content/60 text-sm">
-                        Already have an account?{" "}
+                        มีบัญชีอยู่แล้วใช่ไหม?{" "}
                         <Link to="/login" className="text-primary font-bold hover:underline transition-colors">
-                            Sign in
+                            เข้าสู่ระบบ
                         </Link>
                     </p>
                 </div>

@@ -15,8 +15,8 @@ const SettingsPage = () => {
                 <div className="bg-base-100/40 backdrop-blur-xl border border-base-content/10 rounded-[2.5rem] overflow-hidden shadow-2xl p-6 md:p-10">
                     <div className="space-y-8">
                         <div className="flex flex-col gap-2">
-                            <h2 className="text-3xl font-extrabold text-base-content tracking-wide">Theme Settings</h2>
-                            <p className="text-lg text-base-content/60 font-medium">Choose a theme to personalize your TaskFlow experience.</p>
+                            <h2 className="text-3xl font-extrabold text-base-content tracking-wide">ตั้งค่าธีม</h2>
+                            <p className="text-lg text-base-content/60 font-medium">เลือกธีมเพื่อปรับแต่ง TaskFlow ในแบบของคุณ</p>
                         </div>
 
                         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
@@ -46,14 +46,14 @@ const SettingsPage = () => {
 
                         {/* Preview Section */}
                         <div className="mt-12 pt-8 border-t border-base-content/10">
-                            <h3 className="text-2xl font-bold mb-6 text-base-content">UI Preview</h3>
+                            <h3 className="text-2xl font-bold mb-6 text-base-content">ตัวอย่าง UI</h3>
                             
                             <div className="rounded-3xl border border-base-content/10 overflow-hidden bg-base-100/30 shadow-inner max-w-2xl mx-auto p-4 md:p-8">
                                 {/* Mock Task UI */}
                                 <div className="bg-base-100/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden border border-base-content/5">
                                     {/* App Header */}
                                     <div className="px-5 py-4 border-b border-base-content/10 flex justify-between items-center bg-base-200/50">
-                                        <h3 className="font-bold text-lg text-base-content">Activity Board</h3>
+                                        <h3 className="font-bold text-lg text-base-content">กระดานกิจกรรม</h3>
                                         <button className="btn btn-sm btn-circle btn-primary shadow-md">
                                             <Plus size={16} />
                                         </button>
@@ -65,9 +65,9 @@ const SettingsPage = () => {
                                         <div className="flex items-center gap-4 p-3 rounded-xl bg-base-100 border border-base-content/10 shadow-sm transition-transform hover:scale-[1.01] hover:shadow-md cursor-pointer">
                                             <div className="size-5 rounded-full border-2 border-emerald-400 bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)]"></div>
                                             <div className="flex-1">
-                                                <p className="text-base-content/50 font-bold line-through">Complete morning run</p>
+                                                <p className="text-base-content/50 font-bold line-through">วิ่งตอนเช้า</p>
                                                 <div className="flex gap-2 font-bold mt-1 opacity-70">
-                                                    <span className="text-[10px] bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 rounded-full border border-emerald-500/30 uppercase">Completed</span>
+                                                    <span className="text-[10px] bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 rounded-full border border-emerald-500/30 uppercase">เสร็จสิ้น</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,10 +76,10 @@ const SettingsPage = () => {
                                         <div className="flex items-center gap-4 p-3 rounded-xl bg-base-100 border border-base-content/10 shadow-sm transition-transform hover:scale-[1.01] hover:shadow-md cursor-pointer">
                                             <div className="size-5 rounded-full border-2 border-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.2)]"></div>
                                             <div className="flex-1">
-                                                <p className="text-base-content font-bold">Review Q3 Financial Reports</p>
+                                                <p className="text-base-content font-bold">ตรวจสอบรายงานการเงินไตรมาส 3</p>
                                                 <div className="flex gap-2 font-bold mt-1">
-                                                    <span className="text-[10px] bg-error/10 text-error px-2 rounded-full border border-error/20 uppercase tracking-wider">High Priority</span>
-                                                    <span className="text-[10px] bg-base-content/5 text-base-content/70 px-2 rounded-full border border-base-content/10 uppercase tracking-wider">Pending</span>
+                                                    <span className="text-[10px] bg-error/10 text-error px-2 rounded-full border border-error/20 uppercase tracking-wider">ความสำคัญสูง</span>
+                                                    <span className="text-[10px] bg-base-content/5 text-base-content/70 px-2 rounded-full border border-base-content/10 uppercase tracking-wider">รอดำเนินการ</span>
                                                 </div>
                                             </div>
                                         </div>

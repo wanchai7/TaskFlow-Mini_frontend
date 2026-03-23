@@ -17,9 +17,9 @@ const NoChatSelected = () => {
                 </div>
 
                 {/* Welcome Text */}
-                <h2 className="text-2xl font-bold">Welcome to SE Chat!</h2>
+                <h2 className="text-2xl font-bold">ยินดีต้อนรับสู่ SE Chat!</h2>
                 <p className="text-base-content/60">
-                    Select a conversation from the sidebar to start chatting
+                    เลือกแชทจากแถบด้านข้างเพื่อเริ่มสนทนา
                 </p>
             </div>
         </div>

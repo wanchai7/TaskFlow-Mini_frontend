@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTaskStore } from "../store/useTaskStore";
 import { Loader, ArrowLeft, Save, Briefcase, Flag, AlertCircle } from "lucide-react";
+import { useAuthStore } from "../store/useAuthStore";
 
 const TaskDetailPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { tasks, fetchTasks, updateTask, isUpdating, isLoading } = useTaskStore();
+    const { authUser } = useAuthStore();
     
     const [title, setTitle] = useState("");
     const [status, setStatus] = useState("pending");
@@ -39,7 +41,7 @@ const TaskDetailPage = () => {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-base-300 bg-gradient-to-br from-base-300 via-base-200 to-base-100">
                 <Loader className="size-16 animate-spin text-primary mb-4" />
-                <p className="text-xl text-base-content/80 font-bold tracking-wide">Fetching details...</p>
+                <p className="text-xl text-base-content/80 font-bold tracking-wide">กำลังโหลดรายละเอียด...</p>
             </div>
         );
     }
@@ -48,10 +50,24 @@ const TaskDetailPage = () => {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-base-300 bg-gradient-to-br from-base-300 via-base-200 to-base-100 p-4 pt-20">
                 <AlertCircle className="size-20 text-base-content/50 mb-6 drop-shadow-md" />
-                <h2 className="text-4xl font-extrabold mb-3 text-base-content">Task Not Found</h2>
-                <p className="text-base-content/60 text-lg mb-8 text-center max-w-sm font-medium">The task you are looking for does not exist or has been deleted.</p>
+                <h2 className="text-4xl font-extrabold mb-3 text-base-content">ไม่พบงาน</h2>
+                <p className="text-base-content/60 text-lg mb-8 text-center max-w-sm font-medium">งานที่คุณค้นหาไม่มีอยู่หรือถูกลบไปแล้ว</p>
                 <button onClick={() => navigate("/")} className="btn h-14 px-8 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 shadow-xl font-bold text-lg hover:-translate-y-1 transition-transform">
-                    <ArrowLeft size={18} className="mr-2" /> Return to Dashboard
+                    <ArrowLeft size={18} className="mr-2" /> กลับสู่หน้าหลัก
+                </button>
+            </div>
+        );
+    }
+
+    const isOwner = task.userId?._id === authUser._id || task.userId === authUser._id;
+    if (!isOwner) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-base-300 bg-gradient-to-br from-base-300 via-base-200 to-base-100 p-4 pt-20">
+                <AlertCircle className="size-20 text-error/80 mb-6 drop-shadow-md" />
+                <h2 className="text-4xl font-extrabold mb-3 text-base-content text-error/90">ไม่มีสิทธิ์แก้ไข</h2>
+                <p className="text-base-content/60 text-lg mb-8 text-center max-w-sm font-medium">คุณไม่สามารถแก้ไขหรืออัปเดตสถานะงานที่ผู้อื่นสร้างได้</p>
+                <button onClick={() => navigate("/")} className="btn h-14 px-8 rounded-full bg-primary hover:bg-primary-focus text-primary-content border-0 shadow-xl font-bold text-lg hover:-translate-y-1 transition-transform">
+                    <ArrowLeft size={18} className="mr-2" /> กลับสู่หน้าหลัก
                 </button>
             </div>
         );
@@ -65,7 +81,7 @@ const TaskDetailPage = () => {
             
             <div className="relative z-10 max-w-3xl mx-auto">
                 <button onClick={() => navigate("/")} className="flex items-center gap-2 mb-8 text-base-content/70 hover:text-base-content bg-base-100/30 hover:bg-base-100/50 border border-base-content/10 rounded-full px-6 py-3 transition-colors font-bold shadow-sm">
-                    <ArrowLeft size={18} /> Back to Dashboard
+                    <ArrowLeft size={18} /> กลับสู่หน้าหลัก
                 </button>
                 
                 <div className="bg-base-100/40 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-base-content/10 relative overflow-hidden">
@@ -74,22 +90,22 @@ const TaskDetailPage = () => {
                             <Briefcase className="size-7 text-primary" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-extrabold tracking-wide text-base-content">Edit Task</h1>
-                            <p className="text-base-content/60 mt-2 font-medium text-lg">Update the details and properties below.</p>
+                            <h1 className="text-4xl font-extrabold tracking-wide text-base-content">แก้ไขงาน</h1>
+                            <p className="text-base-content/60 mt-2 font-medium text-lg">อัปเดตรายละเอียดและคุณสมบัติด้านล่าง</p>
                         </div>
                     </div>
                     
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="form-control">
                             <label className="label mb-2 px-1">
-                                <span className="label-text font-bold text-lg text-base-content/90">Task Title</span>
+                                <span className="label-text font-bold text-lg text-base-content/90">ชื่องาน</span>
                             </label>
                             <input
                                 type="text"
                                 className="input h-16 text-lg pl-6 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:bg-base-100/60 focus:outline-none focus:border-primary transition-all font-bold shadow-sm"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                placeholder="E.g. Finish the quarterly report..."
+                                placeholder="เช่น ทำรายงานประจำเดือนให้เสร็จ..."
                                 required
                             />
                         </div>
@@ -97,23 +113,23 @@ const TaskDetailPage = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="form-control">
                                 <label className="label mb-2 px-1">
-                                    <span className="label-text font-bold text-lg text-base-content/90">Progress Status</span>
+                                    <span className="label-text font-bold text-lg text-base-content/90">สถานะความคืบหน้า</span>
                                 </label>
                                 <select 
                                     className="select h-16 text-lg rounded-full bg-base-100/40 border border-base-content/10 text-base-content focus:bg-base-100/60 focus:outline-none focus:border-primary transition-all font-bold shadow-sm [&>option]:bg-base-100 [&>option]:text-base-content"
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
                                 >
-                                    <option value="pending">⏳ Pending</option>
-                                    <option value="in-progress">🚀 In Progress</option>
-                                    <option value="completed">✅ Completed</option>
+                                    <option value="pending">⏳ รอดำเนินการ</option>
+                                    <option value="in-progress">🚀 กำลังดำเนินการ</option>
+                                    <option value="completed">✅ เสร็จสิ้น</option>
                                 </select>
                             </div>
 
                             <div className="form-control">
                                 <label className="label mb-2 px-1">
                                     <span className="label-text font-bold text-lg text-base-content/90 flex gap-2 items-center">
-                                        Priority Level <Flag className="size-5 opacity-70" />
+                                        ระดับความสำคัญ <Flag className="size-5 opacity-70" />
                                     </span>
                                 </label>
                                 <div className="flex bg-base-100/40 p-1.5 rounded-full border border-base-content/10 w-full shadow-sm">
@@ -122,21 +138,21 @@ const TaskDetailPage = () => {
                                         onClick={() => setPriority("low")}
                                         className={`flex-1 rounded-full py-3 text-sm font-extrabold uppercase tracking-wider transition-all ${priority === "low" ? "bg-success text-success-content shadow-lg" : "text-base-content/60 hover:text-base-content hover:bg-base-content/10"}`}
                                     >
-                                        Low
+                                        ต่ำ
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => setPriority("medium")}
                                         className={`flex-1 rounded-full py-3 text-sm font-extrabold uppercase tracking-wider transition-all ${priority === "medium" ? "bg-warning text-warning-content shadow-lg" : "text-base-content/60 hover:text-base-content hover:bg-base-content/10"}`}
                                     >
-                                        Med
+                                        ปานกลาง
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => setPriority("high")}
                                         className={`flex-1 rounded-full py-3 text-sm font-extrabold uppercase tracking-wider transition-all ${priority === "high" ? "bg-error text-error-content shadow-lg" : "text-base-content/60 hover:text-base-content hover:bg-base-content/10"}`}
                                     >
-                                        High
+                                        สูง
                                     </button>
                                 </div>
                             </div>
@@ -149,7 +165,7 @@ const TaskDetailPage = () => {
                                 className="px-6 py-3 text-base-content/60 hover:text-base-content font-bold transition-colors" 
                                 disabled={isUpdating}
                             >
-                                Cancel
+                                ยกเลิก
                             </button>
                             <button 
                                 type="submit" 
@@ -158,11 +174,11 @@ const TaskDetailPage = () => {
                             >
                                 {isUpdating ? (
                                     <span className="flex items-center gap-3">
-                                        <Loader className="animate-spin size-5" /> Saving...
+                                        <Loader className="animate-spin size-5" /> กำลังบันทึก...
                                     </span>
                                 ) : (
                                     <span className="flex items-center gap-3">
-                                        <Save className="size-5" /> Update Task
+                                        <Save className="size-5" /> อัปเดตงาน
                                     </span>
                                 )}
                             </button>

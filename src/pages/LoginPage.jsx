@@ -29,7 +29,7 @@ const LoginPage = () => {
                             <CheckSquare className="size-8 text-primary" />
                         </div>
                     </div>
-                    <h1 className="text-3xl font-bold text-base-content tracking-wide">Sign in</h1>
+                    <h1 className="text-3xl font-bold text-base-content tracking-wide">เข้าสู่ระบบ</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -41,7 +41,7 @@ const LoginPage = () => {
                             <input
                                 type="email"
                                 className="input w-full pl-14 pr-6 h-14 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
-                                placeholder="Email address"
+                                placeholder="อีเมล"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
@@ -56,7 +56,7 @@ const LoginPage = () => {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 className="input w-full pl-14 h-14 pr-12 rounded-full bg-base-100/40 border border-base-content/10 text-base-content placeholder-base-content/50 focus:outline-none focus:bg-base-100/60 focus:border-primary transition-all font-medium backdrop-blur-sm shadow-sm"
-                                placeholder="Password"
+                                placeholder="รหัสผ่าน"
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             />
@@ -77,9 +77,9 @@ const LoginPage = () => {
                     <div className="flex items-center justify-between px-2 text-sm text-base-content/80 font-medium mt-2">
                         <label className="cursor-pointer flex items-center gap-2">
                             <input type="checkbox" className="checkbox checkbox-xs rounded-full border-base-content/30 checked:border-primary checked:bg-primary" />
-                            <span className="label-text">Remember Me</span>
+                            <span className="label-text">จดจำฉัน</span>
                         </label>
-                        <a href="#" className="hover:text-primary hover:underline transition-colors">Forgot Password?</a>
+                        <a href="#" className="hover:text-primary hover:underline transition-colors">ลืมรหัสผ่าน?</a>
                     </div>
 
                     <button 
@@ -90,19 +90,19 @@ const LoginPage = () => {
                         {isLoggingIn ? (
                             <div className="flex items-center gap-2">
                                 <Loader2 className="h-5 w-5 animate-spin" />
-                                <span>Loading...</span>
+                                <span>กำลังโหลด...</span>
                             </div>
                         ) : (
-                            "Sign in"
+                            "เข้าสู่ระบบ"
                         )}
                     </button>
                 </form>
 
                 <div className="text-center mt-8">
                     <p className="text-base-content/60 text-sm">
-                        Don&apos;t have an account?{" "}
+                        ยังไม่มีบัญชีใช่ไหม?{" "}
                         <Link to="/signup" className="text-primary font-bold hover:underline transition-colors">
-                            Sign up
+                            สมัครสมาชิก
                         </Link>
                     </p>
                 </div>

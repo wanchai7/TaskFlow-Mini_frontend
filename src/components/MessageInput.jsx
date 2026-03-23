@@ -13,7 +13,7 @@ const MessageInput = () => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (!file.type.startsWith("image/")) {
-            toast.error("Please select an image file");
+            toast.error("กรุณาเลือกไฟล์รูปภาพ");
             return;
         }
 
@@ -79,7 +79,7 @@ const MessageInput = () => {
                     <input
                         type="text"
                         className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-                        placeholder="Type a message..."
+                        placeholder="พิมพ์ข้อความ..."
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                     />

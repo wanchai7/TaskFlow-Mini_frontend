@@ -79,7 +79,7 @@ export const useChatStore = create(
                     }]
                 });
             } catch (error) {
-                toast.error(error.response.data.message || "Failed to fetch users");
+                toast.error(error.response.data.message || "โหลดข้อมูลผู้ใช้ล้มเหลว");
             } finally {
                 set({ isUsersLoading: false });
             }
@@ -95,7 +95,7 @@ export const useChatStore = create(
                 const res = await axiosInstance.get(`/messages/${userId}`);
                 set({ messages: res.data });
             } catch (error) {
-                toast.error(error.response.data.message || "Failed to fetch messages");
+                toast.error(error.response.data.message || "โหลดข้อความล้มเหลว");
             } finally {
                 set({ isMessagesLoading: false });
             }
@@ -153,7 +153,7 @@ export const useChatStore = create(
                     })
                 }));
             } catch (error) {
-                toast.error(error.response?.data?.message || "Failed to send message");
+                toast.error(error.response?.data?.message || "ส่งข้อความล้มเหลว");
             }
         },
 
