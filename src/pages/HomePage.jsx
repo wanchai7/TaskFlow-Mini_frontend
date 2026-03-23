@@ -159,17 +159,22 @@ const HomePage = () => {
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className="text-xs text-base-content/50 mt-1 font-medium flex items-center">
-                                                    โดย: {task.userId?.fullName || "คุณ"}
-                                                    {task.userId && (
-                                                        <span className={`inline-block w-2 h-2 rounded-full ml-2 mr-1 ${onlineUsers?.includes(task.userId._id || task.userId) ? 'bg-success' : 'bg-base-content/30'}`}></span>
-                                                    )}
-                                                    {task.userId && (
-                                                        <span className="text-[10px] opacity-70">
-                                                            {onlineUsers?.includes(task.userId._id || task.userId) ? 'ออนไลน์' : 'ออฟไลน์'}
+                                                <div className="flex items-center gap-2 mt-3 pt-2 border-t border-base-content/5">
+                                                    <div className={`avatar ${onlineUsers?.includes(task.userId?._id || task.userId) ? 'online' : 'offline'}`}>
+                                                        <div className="w-6 h-6 rounded-full shadow-sm bg-base-300">
+                                                            <img 
+                                                                src={task.userId?.profilePic || `https://ui-avatars.com/api/?name=${task.userId?.fullName || "User"}&background=random`} 
+                                                                alt={task.userId?.fullName || "User Avatar"} 
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-xs text-base-content/70 font-bold flex items-center">
+                                                        {task.userId?.fullName || "คุณ"}
+                                                        <span className={`text-[10px] ml-1 px-1.5 py-0.5 rounded-full ${onlineUsers?.includes(task.userId?._id || task.userId) ? 'bg-success/10 text-success' : 'bg-base-content/10 text-base-content/50'}`}>
+                                                            {onlineUsers?.includes(task.userId?._id || task.userId) ? 'ออนไลน์' : 'ออฟไลน์'}
                                                         </span>
-                                                    )}
-                                                </p>
+                                                    </p>
+                                                </div>
                                                 <div className="flex flex-wrap gap-2 mt-3">
                                                     <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full border ${
                                                         task.priority === "high" ? "bg-error/20 text-error border-error/30" : 
